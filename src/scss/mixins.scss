@@ -1,0 +1,42 @@
+/*********************
+VARIABLES
+*********************/
+
+$dark: #000;
+$light: #fff;
+$primary: #f7d417;
+$secondary: #003373;
+
+
+/*********************
+BREAKPOINTS
+*********************/
+
+@mixin breakpoint($point) {
+  @if $point == x-large {
+    @media (min-width: 1200px) {
+      @content ;
+    }
+  } @else if $point == large {
+    @media (min-width: 1000px) {
+      @content ;
+    }
+  } @else if $point == medium {
+    @media (min-width: 800px) {
+      @content ;
+    }
+  } @else if $point == small {
+    @media (min-width: 600px) {
+      @content ;
+    }
+  } @else if $point == x-small {
+    @media (min-width: 400px) {
+      @content ;
+    }
+  } @else if $point == xx-small {
+    @media (max-width: 200px) {
+      @content ;
+    }
+
+  }
+}

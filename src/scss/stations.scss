@@ -1,0 +1,61 @@
+.stations {
+  &--list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    list-style-type: none;
+    padding: 0;
+    grid-column-gap: 0.5em;
+    grid-row-gap: 0.5em;
+
+  }
+
+  &--item {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    padding: 0.5em;
+    background-color: lighten($dark, 10%);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform ease-out 0.2s;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+
+    button {
+      //border-radius: 10px;
+      height: 45%;
+      max-height: 150px;
+      background-color: $primary;
+      color: $secondary;
+      border: none;
+      cursor: grab;
+    }
+  }
+
+  &-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    max-width: 800px;
+
+    input[type="submit"] {
+      max-width: 150px;
+      padding: 0.2em 0.5em;
+    }
+
+    label {
+      margin: 0.5em;
+
+      input, select {
+        margin-left: 0.5em;
+      }
+    }
+  }
+}
