@@ -1,7 +1,7 @@
 {
   "name": "progressive-web-apps-1920",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "public/main.js",
   "repository": "git@github.com:aaraar/progressive-web-apps-1920.git",
   "author": "Bas de Greeuw <bdegreeuw@ziggo.nl>",
   "license": "MIT",
