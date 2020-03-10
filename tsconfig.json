@@ -8,9 +8,6 @@
     "noImplicitAny": true,
     "module": "commonjs",
     "target": "es2017",
-    "moduleResolution": "Node",
-    "exclude": [
-      "node_modules"
-    ]
+    "moduleResolution": "Node"
   }
 }

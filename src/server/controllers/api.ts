@@ -1,5 +1,6 @@
 import { CountryCode } from '../models/Station';
 import { Trip } from '../models/Trip';
+const fetch = require('node-fetch');
 
 type Response = {
     payload?: {
@@ -42,6 +43,8 @@ interface RequestObject {
 export class Api {
     private rawStations: { code: string; namen: { lang: string }; land: CountryCode }[];
 
+    constructor ( ) {
+    }
     async fetch (
         baseUrl: string,
         endpoint: string,
@@ -50,7 +53,7 @@ export class Api {
         const queryArray: string[] = queries.map ( query => query.join ( '=' ) );
         const query: string = queryArray.join ( '&' );
         return new Promise ( ( resolve, reject ) => {
-            fetch ( `https://cors-anywhere.herokuapp.com/${ baseUrl }${ endpoint }?${ query }`, requestObject )
+            fetch ( `${ baseUrl }${ endpoint }?${ query }`, requestObject )
                 .then ( res => {
                     if ( res.ok ) resolve ( res.json () );
                     else reject ( res );
@@ -70,25 +73,23 @@ export class Api {
                 }
             } )
             .then ( ( res: Response ) => {
-                this.rawStations = res.payload;
                 return res.payload;
             } );
     }
 
-    getArrivals ( code ) {
-        return new Promise ( ( resolve, reject ) => {
+    getArrivals ( code: string ) {
             this.fetch (
                 'https://gateway.apiportal.ns.nl/reisinformatie-api/api/v2/',
                 'arrivals', {
                     method: 'GET',
                     headers: {
-                        'Ocp-Apim-Subscription-Key': 'process.env.API_KEY_STATIONS'
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Ocp-Apim-Subscription-Key': process.env.API_KEY_STATIONS
                     }
                 }, [ [ 'station', code ] ] )
                 .then ( ( res: ArrivalsResponse ) => {
-                    resolve ( res );
-                } );
-        } );
+                    return res.payload;
+                })
     }
 
     getDepartures ( code ) {
