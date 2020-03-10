@@ -1,9 +1,0 @@
-extends layouts/main-layout.pug
-block content
-    section(class='stations--wrapper')
-        ul(class='stations--list')
-            each station in stations
-                li(class='stations--item')
-                    a(href=`/stations/${ station.code }`)
-                        h3= station.name
-                        p= station.country

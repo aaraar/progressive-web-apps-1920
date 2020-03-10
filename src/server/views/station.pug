@@ -1,7 +1,0 @@
-extends layouts/main-layout.pug
-block content
-    section(class='station--wrapper')
-    h2
-    each arrival in arrivals
-        h3= arrival.origin
-        p= JSON.stringify ( arrival )
