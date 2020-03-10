@@ -6,10 +6,18 @@
   "author": "Bas de Greeuw <bdegreeuw@ziggo.nl>",
   "license": "MIT",
   "scripts": {
-    "generate": "node data/generate.js",
-    "bundle:dev": "cross-env NODE_ENV=development webpack --mode development --watch",
-    "bundle": "cross-env NODE_ENV=production webpack --mode production",
-    "build": "run-s generate bundle"
+        "predev": "yarn build:data",
+        "dev": "run-p dev:webpack dev:tsc",
+        "dev:webpack": "cross-env NODE_ENV=development webpack --mode development --watch",
+        "dev:tsc": "tsc -w",
+        "build:webpack": "cross-env NODE_ENV=production webpack --mode production",
+        "build:data": "node data/generateData.js",
+        "build:tsc": "tsc -b",
+        "prebuild": "yarn build:data",
+        "build": "yarn build:webpack",
+        "postbuild": "yarn build:tsc",
+        "start": "node dist/index.js",
+        "start:watch": "nodemon dist/index.js"
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",

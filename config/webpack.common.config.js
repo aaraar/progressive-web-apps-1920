@@ -6,7 +6,7 @@ module.exports = {
     entry: "./src/index.js",
     output: {
         filename: "main.js",
-        path: path.resolve ( __dirname, "../dist/static" ),
+        path: path.resolve ( __dirname, "../dist/scripts" ),
     },
     resolve: {
         extensions: [ '.js' ],
@@ -49,15 +49,10 @@ module.exports = {
         ]
     },
     plugins: [
-        new CleanWebpackPlugin (),
         new CopyWebpackPlugin ( [
             {
                 from: "./src/assets/images",
                 to: "assets/images"
-            },
-            {
-                from: "./src/server/views",
-                to: "../views"
             }
         ], )
     ]
