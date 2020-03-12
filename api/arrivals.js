@@ -14,6 +14,7 @@ module.exports = ( req, res ) => {
             if ( response.ok ) return response.json ();
             else reject ( response );
         } )
+        .catch( err => { console.error( err ) } )
         .then ( data => {
             res.json ( data );
         } )

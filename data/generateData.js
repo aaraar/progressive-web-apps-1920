@@ -70,6 +70,7 @@ function getArrivals(code) {
                 if ( res.ok ) return res.json ();
                 else reject ( res );
             } )
+            .catch( err => { console.error( err ) } )
             .then ( json => {
                 resolve (json.payload.arrivals );
             } )
