@@ -58,7 +58,7 @@ module.exports = {
             },
             {
                 from: path.join ( __dirname, '..', 'src/api' ),
-                to: path.join ( __dirname, '..', 'public/api' )
+                to: path.join ( __dirname, '..', 'api' )
             }
         ], )
     ]
