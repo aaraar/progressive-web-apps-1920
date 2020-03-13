@@ -1,39 +1,26 @@
-# Progressive Web Apps @cmda-minor-web · 2019-2020
+![NS header](./docs/images/ns-header.png)
+# NS-INFO static site
+To improve the performance of [NS-INFO](https://aaraar.github.io/web-app-from-scratch-1920) I created a static site generator for the application.
 
-In this course we will convert the client side web application previously made at the OBA into a server side rendered application. We also add functionalities based on the Service Worker and turn the application into a Progressive Web App. Ultimately we are going to implement a series of optimisations to improve the performance of the application.  
+- [x] Set up build tools and deployment pipeline (custom webpack config and personal site generator)
+- [X] Added environment modes for production and development (for workflow and ratelimit purposes)
+- [x] Statically generate homepage
+- [x] Statically generate station page
+- [x] Deployed to now.sh
+- [x] Added serverless functions to request arrivals and departures (not rendered yet, but active in the console)
+- [x] Added static image of each station's location
+- [ ] Add more detailed information to each station
+- [ ] Progressive Enhance map to be interactive with javascript
+- [ ] PE station to add arrivals and departures
+- [ ] Create Trips page
+- [ ] Create Trip page
 
-## Learning goals
-- _You understand the difference between client side and server side rendering and you can apply server side rendering
-in your application_
-- _You understand how a Service Worker works and you can implement it in your application._
-- _You understand how the critical render path works and how you can optimize it for a better runtime and / or perceived performance._
-
-[Rubric](https://docs.google.com/spreadsheets/d/e/2PACX-1vSc48v1nrjcwH0llcTd68xyK7f2fDC2UL4d6h4ZNW3DU8ucez6ZOHiId1XSX0RP5ByvLC8p5pVUGZT4/pubhtml)
-
-## Program
-
-### Week 1 - Server Side Rendering 📡
-
-Goal: Render web pages server side
-
-[Exercises](https://github.com/cmda-minor-web/progressive-web-apps-1920/blob/master/course/week-1.md)  
-[Slides](...)  
-[The Web landscape](...)  
-
-
-### Week 2 - Progressive Web App 🚀
-
-Goals: Convert application to a Progressive Web App
-
-[Opdrachten](https://github.com/cmda-minor-web/progressive-web-apps-1920/blob/master/course/week-2.md)  
-[Slides](...)
+## What I tried
+At first I tried to do the app SSR, I did not feel like I was doing anything new or worthwhile though, so I decided to take
+a leap and try my hand at generating the site to static HTML files with Node.
+I had to start over because of this decision, but the performance benefits up to this point are huge and it's actually really fun to do.
 
 
-### Week 2 - Critical Rendering Path 📉 
-
-Doel: Optimize the Critical Rendering Path   
-[Opdrachten](https://github.com/cmda-minor-web/progressive-web-apps-1920/blob/master/course/week-3.md)  
-[Slides](...)
 
 
 <!-- Add a link to your live demo in Github Pages 🌐-->

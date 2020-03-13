@@ -16,8 +16,8 @@ function checkFile( writePath, mode = 'json' ) {
         fs.readFile ( writePath, 'utf-8', ( err, data ) => {
             if ( err ) reject ( err );
             if ( mode === 'json' ) console.log ( `🛤 🔍 Data tracks constructed at ${ writePath }` );
-            else if ( mode === 'html' ) console.log ( `🛤 📄 Markup tracks constructed at  ${ writePath }` );
-            else console.log ( `👮 Are you spraying graffiti at ${ writePath } ?` );
+            // else if ( mode === 'html' ) console.log ( `🛤 📄 Markup tracks constructed at  ${ writePath }` );
+            // else console.log ( `👮 Are you spraying graffiti at ${ writePath } ?` );
             resolve ( data );
         } );
     } )

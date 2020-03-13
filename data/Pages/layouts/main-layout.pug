@@ -5,6 +5,7 @@ html(lang="en")
         meta(content="width=device-width, initial-scale=1.0" name="viewport")
         meta(content="ie=edge" http-equiv="X-UA-Compatible")
         title #{ title }
+        link(rel='stylesheet' href='/styles.css')
     body
         a(href='/')
             header
@@ -13,5 +14,5 @@ html(lang="en")
             div(id='app')
                 block content
             footer MIT © CMD Amsterdam, docs and images are CC-BY-4.0.
-        script(src='/scripts/main.js')
+            script(src='/main.js' async)
 

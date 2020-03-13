@@ -1,12 +1,12 @@
-const path = require ( "path" );
-const CopyWebpackPlugin = require ( "copy-webpack-plugin" );
-const { CleanWebpackPlugin } = require ( 'clean-webpack-plugin' );
+const path = require ( 'path' );
+const CopyWebpackPlugin = require ( 'copy-webpack-plugin' );
+const MiniCssExtractPlugin = require ( 'mini-css-extract-plugin' );
 
 module.exports = {
-    entry: "./src/index.js",
+    entry: './src/index.js',
     output: {
-        filename: "main.js",
-        path: path.resolve ( __dirname, "../public/scripts" ),
+        filename: 'main.js',
+        path: path.resolve ( __dirname, '..', 'public' ),
     },
     resolve: {
         extensions: [ '.js' ],
@@ -17,20 +17,18 @@ module.exports = {
                 test: [ /.js$/ ],
                 exclude: /(node_modules)(data)/,
                 use: {
-                    loader: "babel-loader",
+                    loader: 'babel-loader',
                     options: {
-                        presets: [ "@babel/preset-env" ]
+                        presets: [ '@babel/preset-env' ]
                     }
                 }
             },
             {
                 test: /\.s[ac]ss$/i,
                 use: [
-                    'style-loader',
+                    MiniCssExtractPlugin.loader,
                     'css-loader',
-                    {
-                        loader: "postcss-loader"
-                    },
+                    'postcss-loader',
                     'sass-loader',
                 ]
             },
@@ -38,10 +36,10 @@ module.exports = {
                 test: /\.(png|jpg|gif|svg)$/,
                 use: [
                     {
-                        loader: "file-loader",
+                        loader: 'file-loader',
                         options: {
-                            name: "[name].[ext]",
-                            outputPath: "static/assets/images"
+                            name: '[name].[ext]',
+                            outputPath: 'static/assets/images'
                         }
                     }
                 ]
@@ -49,10 +47,18 @@ module.exports = {
         ]
     },
     plugins: [
+        new MiniCssExtractPlugin ( {
+            to: 'styles',
+            filename: 'styles.css'
+        } ),
         new CopyWebpackPlugin ( [
             {
-                from: "./src/assets/images",
-                to: "assets/images"
+                from: path.join ( __dirname, '..', 'src/assets/images' ),
+                to: path.join ( __dirname, '..', 'public/assets/images' )
+            },
+            {
+                from: path.join ( __dirname, '..', 'src/api' ),
+                to: path.join ( __dirname, '..', 'public/api' )
             }
         ], )
     ]
