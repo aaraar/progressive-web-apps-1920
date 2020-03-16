@@ -6,7 +6,6 @@ module.exports = {
     
     entry: {
         main: './src/index.js',
-        sw: './src/modules/sw.js'
     },
     output: {
         filename: '[name].js',
@@ -67,6 +66,10 @@ module.exports = {
             {
                 from: path.join ( __dirname, '..', 'src/manifest.webmanifest' ),
                 to: path.join ( __dirname, '..', 'public/manifest.webmanifest' )
+            },
+            {
+                from: './src/modules/sw.js',
+                to:  path.join ( __dirname, '..', 'public/sw.js' )
             }
             // {
             //     from: path.join ( __dirname, '..', 'src/api' ),

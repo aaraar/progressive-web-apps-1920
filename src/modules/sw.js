@@ -19,7 +19,6 @@ self.addEventListener('install', (event) => {
                     '/styles.css'
                 ]);
             })
-            .then(self.skipWaiting())
     };
     event.waitUntil(preCache().then(self.skipWaiting())
     );
@@ -32,18 +31,47 @@ self.addEventListener('fetch', (event) => {
         caches.match(event.request, {
             ignoreSearch: hasQuery
         }).then((resp) => {
-            return  resp || fetch(event.request).then((response) => {
+            return resp || fetch(event.request, {redirect: 'follow'}).then((response) => {
                 let responseClone = response.clone();
                 caches.open('html').then((cache) => {
                     cache.put(event.request, responseClone);
                 });
-                return response
+                return response;
             });
-
-        }).catch(() => {
+                }).catch(() => {
             return caches.match('/404');
         })
-    )}
+    )} else if (isCssGetRequest(event.request)) {
+        event.respondWith(
+            caches.match(event.request, {
+                ignoreSearch: hasQuery
+            }).then((resp) => {
+                return resp || fetch(event.request, {redirect: 'follow'}).then((response) => {
+                    let responseClone = response.clone();
+                    caches.open('css').then((cache) => {
+                        cache.put(event.request, responseClone);
+                    });
+                    return response;
+                });
+            }).catch(() => {
+                return caches.match('/404');
+            })
+        )} else if (isJsGetRequest(event.request)) {
+        event.respondWith(
+            caches.match(event.request, {
+                ignoreSearch: hasQuery
+            }).then((resp) => {
+                return resp || fetch(event.request, {redirect: 'follow'}).then((response) => {
+                    let responseClone = response.clone();
+                    caches.open('js').then((cache) => {
+                        cache.put(event.request, responseClone);
+                    });
+                    return response;
+                });
+            }).catch(() => {
+                return caches.match('/404');
+            })
+        )}
 });
 
 /**
@@ -53,4 +81,22 @@ self.addEventListener('fetch', (event) => {
  */
 function isHtmlGetRequest(request) {
     return request.method === 'GET' && (request.headers.get('accept') !== null && request.headers.get('accept').indexOf('text/html') > -1);
+}
+
+/**
+ *
+ * @param request
+ * @returns {boolean|boolean}
+ */
+function isJsGetRequest(request) {
+    return request.method === 'GET' && (request.headers.get('accept') !== null && request.headers.get('accept').indexOf('application/javascript') > -1);
+}
+
+/**
+ *
+ * @param request
+ * @returns {boolean|boolean}
+ */
+function isCssGetRequest(request) {
+    return request.method === 'GET' && (request.headers.get('accept') !== null && request.headers.get('accept').indexOf('text/css') > -1);
 }
