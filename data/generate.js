@@ -2,7 +2,6 @@ const fs = require ( 'fs-extra' );
 const path = require ( 'path' );
 const { generateJson, getStations, getJson } = require ( './generateData' );
 const { generateHtml } = require ( './generateHtml' );
-const { getImages } = require ( './getImage' );
 const stationsPath = path.join ( __dirname, '..', 'public/data/stations.json' );
 require ( 'dotenv' ).config ();
 console.log ( process.env.NODE_ENV );
@@ -28,12 +27,7 @@ function generateCommon() {
                     console.error ( err )
                 } )
                 .then ( stations => {
-                    if ( process.env.NODE_ENV === 'production' ) {
-                        stations.forEach ( station => {
-                            console.log ( '🗺 Generating maps of the stations' );
-                            getImages ( station.lng, station.lat, station.code ).catch ( err => console.error ( err ) )
-                        } )
-                    }
+                    generate404();
                     console.log ( '🚧 Constructing index station' );
                     generateIndex ( stations );
                     console.log ( '🚧 Constructing stations, this may take a while' );
@@ -64,5 +58,13 @@ function generateIndex( stations ) {
             title: "NS INFO",
             pageTitle: "NS",
             stations: stations
+        } );
+}
+function generate404( ) {
+    generateHtml ( path.join ( __dirname, '..', 'public/404/index.html' ),
+        path.join ( __dirname, 'Pages/404.pug' ),
+        {
+            title: "NS INFO",
+            pageTitle: "404",
         } );
 }

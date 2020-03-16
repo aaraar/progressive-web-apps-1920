@@ -8,7 +8,7 @@
   "scripts": {
     "generate": "node data/generate.js",
     "bundle:dev": "cross-env NODE_ENV=development webpack --mode development --watch",
-    "bundle": "cross-env NODE_ENV=production webpack --mode production",
+    "bundle": "webpack --mode $NODE_ENV",
     "build": "run-s generate bundle"
   },
   "dependencies": {

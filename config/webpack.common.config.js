@@ -3,9 +3,13 @@ const CopyWebpackPlugin = require ( 'copy-webpack-plugin' );
 const MiniCssExtractPlugin = require ( 'mini-css-extract-plugin' );
 
 module.exports = {
-    entry: './src/index.js',
+    
+    entry: {
+        main: './src/index.js',
+        sw: './src/modules/sw.js'
+    },
     output: {
-        filename: 'main.js',
+        filename: '[name].js',
         path: path.resolve ( __dirname, '..', 'public' ),
     },
     resolve: {
@@ -57,9 +61,17 @@ module.exports = {
                 to: path.join ( __dirname, '..', 'public/assets/images' )
             },
             {
-                from: path.join ( __dirname, '..', 'src/api' ),
-                to: path.join ( __dirname, '..', 'api' )
+                from: path.join ( __dirname, '..', 'src/favicon' ),
+                to: path.join ( __dirname, '..', 'public/favicon' )
+            },
+            {
+                from: path.join ( __dirname, '..', 'src/manifest.webmanifest' ),
+                to: path.join ( __dirname, '..', 'public/manifest.webmanifest' )
             }
+            // {
+            //     from: path.join ( __dirname, '..', 'src/api' ),
+            //     to: path.join ( __dirname, '..', 'api' )
+            // }
         ], )
     ]
 };

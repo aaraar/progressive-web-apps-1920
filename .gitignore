@@ -3,4 +3,5 @@ dist
 public
 .idea
 .env
+.env.build
 .now
