@@ -1,24 +1,16 @@
+const CORE_ASSETS = [
+    '/',
+    '/404',
+    'main.js',
+    'styles.css'
+];
+
 self.addEventListener('install', (event) => {
     const preCache = async () => {
-        caches.open('html')
+        caches.open('core')
             .then((cache) => {
-                return cache.addAll([
-                    '/',
-                    '/404'
-                ]);
+                return cache.addAll(CORE_ASSETS);
             });
-        caches.open('js')
-            .then((cache) => {
-                return cache.addAll([
-                    '/main.js'
-                ]);
-            });
-        caches.open('css')
-            .then((cache) => {
-                return cache.addAll([
-                    '/styles.css'
-                ]);
-            })
     };
     event.waitUntil(preCache().then(self.skipWaiting())
     );
@@ -26,50 +18,29 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('fetch', (event) => {
     const hasQuery = event.request.url.indexOf('?') !== -1;
-    if (isHtmlGetRequest(event.request)) {
+    if (isCoreGetRequest(event.request)) {
         event.respondWith(
-        caches.match(event.request, {
-            ignoreSearch: hasQuery
-        }).then((resp) => {
-            return resp || fetch(event.request, {redirect: 'follow'}).then((response) => {
-                let responseClone = response.clone();
-                caches.open('html').then((cache) => {
-                    cache.put(event.request, responseClone);
-                });
-                return response;
-            });
-                }).catch(() => {
-            return caches.match('/404');
+        caches.open('core').then((cache) => {
+                console.log('core');
+                return cache.match(event.request)
+            }).catch(() => {
+            return new Response('CORE_ASSETS not found in cache');
         })
-    )} else if (isCssGetRequest(event.request)) {
+    )} else if (isHtmlGetRequest(event.request)) {
         event.respondWith(
             caches.match(event.request, {
                 ignoreSearch: hasQuery
             }).then((resp) => {
+                console.log('Page request');
                 return resp || fetch(event.request, {redirect: 'follow'}).then((response) => {
                     let responseClone = response.clone();
-                    caches.open('css').then((cache) => {
+                    caches.open('html').then((cache) => {
                         cache.put(event.request, responseClone);
                     });
                     return response;
                 });
             }).catch(() => {
-                return caches.match('/404');
-            })
-        )} else if (isJsGetRequest(event.request)) {
-        event.respondWith(
-            caches.match(event.request, {
-                ignoreSearch: hasQuery
-            }).then((resp) => {
-                return resp || fetch(event.request, {redirect: 'follow'}).then((response) => {
-                    let responseClone = response.clone();
-                    caches.open('js').then((cache) => {
-                        cache.put(event.request, responseClone);
-                    });
-                    return response;
-                });
-            }).catch(() => {
-                return caches.match('/404');
+                caches.open('core').then(cache => cache.match('/404'));
             })
         )}
 });
@@ -99,4 +70,23 @@ function isJsGetRequest(request) {
  */
 function isCssGetRequest(request) {
     return request.method === 'GET' && (request.headers.get('accept') !== null && request.headers.get('accept').indexOf('text/css') > -1);
+}
+
+/**
+ *
+ * @param request
+ * @returns {boolean|boolean}
+ */
+function isCoreGetRequest(request) {
+    return request.method === 'GET' && (request.headers.get('accept') !== null && CORE_ASSETS.includes(getPathName(request.url)))
+}
+
+/**
+ *
+ * @param requestUrl
+ * @returns {string}
+ */
+function getPathName(requestUrl) {
+    const url = new URL(requestUrl);
+    return url.pathname
 }

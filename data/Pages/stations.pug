@@ -3,4 +3,16 @@ block content
     section(class='station--wrapper')
     h2= station.name
     h3= station.country
+    each place, type in places
+        h4= type
+        ul(class='places')
+            each location in place
+                each locationObj in location
+                    if locationObj.thumbnail
+                        li(class='place place--img')
+                            img(src=`https://places.ns-mlab.nl/${locationObj.thumbnail.uri}` alt=locationObj.name loading='lazy')
+                            .place--description
+                                em= locationObj.name
+                                if locationObj.description
+                                    p= locationObj.description
     img(src=`/assets/images/maps/${station.code}.png`)

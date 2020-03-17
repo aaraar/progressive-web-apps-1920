@@ -3,9 +3,8 @@ const path = require ( 'path' );
 const request = require ( 'request' );
 const fs = require ( 'fs-extra' );
 const pump = require ( 'pump' );
+const {stationsPath} = require("./tasks/stations");
 const { getJson } = require ( "./generateData" );
-const stationsPath = path.join ( __dirname, '..', 'public/data/stations.json' );
-
 
 getJson ( stationsPath )
     .catch ( err => {

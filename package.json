@@ -6,10 +6,11 @@
   "author": "Bas de Greeuw <bdegreeuw@ziggo.nl>",
   "license": "MIT",
   "scripts": {
+    "pregenerate": "node data/tasks/stations.js",
     "generate": "node data/generate.js",
-    "bundle:dev": "cross-env NODE_ENV=development webpack --mode development --watch",
-    "bundle": "webpack --mode $NODE_ENV",
-    "build": "run-s generate bundle"
+    "prebuild": "yarn generate",
+    "devBuild": "webpack --mode development",
+    "build": "webpack --mode production"
   },
   "dependencies": {
     "@babel/core": "^7.8.7",

@@ -36,3 +36,39 @@
     }
   }
 }
+
+.place {
+  &s {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    list-style: none;
+  }
+  margin: 0.5em;
+  position: relative;
+  &--img {
+    width: 320px;
+    height: 200px;
+    img, .place--description {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+    .place--description {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      opacity: 0;
+      background-color: rgba(0,0,0,0.5);
+      transition: 0.5s ease-in-out;
+    }
+    &:hover .place--description {
+      opacity: 100;
+    }
+  }
+}

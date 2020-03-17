@@ -3,6 +3,9 @@ const path = require ( 'path' );
 const fs = require ( 'fs-extra' );
 require ( 'dotenv' ).config ();
 
+const stationsPath = path.join ( __dirname, '..', 'public/data/stations.json' );
+const placesPath = path.join ( __dirname, '..', 'public/data/places.json' );
+
 
 function writeToFile( writePath, data, cb ) {
     fs.mkdirp ( path.dirname ( writePath ), err => {
@@ -50,9 +53,33 @@ function getStations() {
                 else reject ( res );
             } )
             .then ( json => {
-                resolve ( mapStations ( json.payload ) );
+                const mappedStations = mapStations ( json.payload );
+                console.log('🚀 Basic Station info created');
             } )
     } )
+}
+
+function getPlaces() {
+    return new Promise ((resolve, reject) => {
+        fetch(
+            `https://gateway.apiportal.ns.nl/places-api/v2/places?lang=en&details=True`,
+            {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Ocp-Apim-Subscription-Key': process.env.API_KEY_STATIONS
+                }
+            }
+        )
+            .then ( ( res ) => {
+                if ( res.ok ) return res.json ();
+                else reject ( res );
+            } )
+            .then ( json => {
+                resolve (json.payload)
+            } )
+            .catch(err => console.error(err))
+    });
 }
 
 function getArrivals(code) {
@@ -126,6 +153,9 @@ module.exports = {
     generateJson: generateJson,
     getJson: getJson,
     getStations: getStations,
+    getPlaces: getPlaces,
     writeToFile: writeToFile,
-    checkFile: checkFile
+    checkFile: checkFile,
+    stationsPath: stationsPath,
+    placesPath: placesPath
 };
