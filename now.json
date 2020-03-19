@@ -2,7 +2,8 @@
   "env": {
     "API_KEY_STATIONS": "@api_key_stations",
     "API_KEY_TRIPS": "@api_key_trips",
-    "MAPBOX_TOKEN": "@mapbox_token"
+    "MAPBOX_TOKEN": "@mapbox_token",
+    "NODE_ENV": "production"
   },
   "build": {
     "env": {
