@@ -1,7 +1,8 @@
 ### [Live Demo](https://ns-info.now.sh)
 ![NS header](./docs/images/ns-header.png)
 # NS-INFO static site
-To improve the performance of [NS-INFO](https://aaraar.github.io/web-app-from-scratch-1920) I created a static site generator for the application.
+To improve the performance of [NS-INFO](https://aaraar.github.io/web-app-from-scratch-1920) I created a static site generator.   
+Unfortunately the core functionality is somewhat out of the scope I proposed for this project, so it kind of spiraled into something different
 
 ![Static Home](./docs/images/staticHome.png)
 
@@ -46,7 +47,7 @@ Check out the dutch stations in particular, since more data is available to thos
 ![Static Details](./docs/images/staticMap.png)
 
 ## Installing 🔍
-To install this application enter the following into your terminal:
+To install this application follow these steps:
 ```
 git clone https://github.com/aaraar/progressive-web-apps-1920
 
@@ -67,7 +68,7 @@ yarn / npm install
 - run `now dev`
 
 ### Packages and Technologies
-This project makes use of the following packages and technologies:
+This project makes use of the following tech:
 
   * Webpack
   * Pug
@@ -81,7 +82,7 @@ I made use of the following API for this project:
   * NS tripplanner (STATIONS) API
 
 ## How It Works 🛠️
-Here I explain the core features of this project.
+Core features of this project.
 
   * JSON files are generated from the NS API's
   * Images are generated from the mapbox API
