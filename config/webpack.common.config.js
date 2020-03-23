@@ -1,6 +1,9 @@
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const path = require ( 'path' );
 const CopyWebpackPlugin = require ( 'copy-webpack-plugin' );
 const MiniCssExtractPlugin = require ( 'mini-css-extract-plugin' );
+const ServiceWorkerWebpackPlugin = require ('serviceworker-webpack-plugin');
+const WebpackManifestPlugin = require ('webpack-manifest-plugin');
 
 module.exports = {
     
@@ -8,7 +11,7 @@ module.exports = {
         main: './src/index.js',
     },
     output: {
-        filename: '[name].js',
+        filename: '[name]-[contenthash].js',
         path: path.resolve ( __dirname, '..', 'public' ),
     },
     resolve: {
@@ -19,12 +22,6 @@ module.exports = {
             {
                 test: [ /.js$/ ],
                 exclude: /(node_modules)(data)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: [ '@babel/preset-env' ]
-                    }
-                }
             },
             {
                 test: /\.s[ac]ss$/i,
@@ -50,10 +47,17 @@ module.exports = {
         ]
     },
     plugins: [
+        new CleanWebpackPlugin(),
         new MiniCssExtractPlugin ( {
             to: 'styles',
-            filename: 'styles.css'
+            filename: 'styles-[contenthash].css'
         } ),
+        new WebpackManifestPlugin(),
+        new ServiceWorkerWebpackPlugin({
+            entry: path.join(__dirname, '..', 'src/modules/sw.js'),
+            filename: 'sw.js',
+            includes: ['*.css', '*.js'],
+        }),
         new CopyWebpackPlugin ( [
             {
                 from: path.join ( __dirname, '..', 'src/assets/images' ),
@@ -67,10 +71,6 @@ module.exports = {
                 from: path.join ( __dirname, '..', 'src/manifest.webmanifest' ),
                 to: path.join ( __dirname, '..', 'public/manifest.webmanifest' )
             },
-            {
-                from: './src/modules/sw.js',
-                to:  path.join ( __dirname, '..', 'public/sw.js' )
-            }
             // {
             //     from: path.join ( __dirname, '..', 'src/api' ),
             //     to: path.join ( __dirname, '..', 'api' )

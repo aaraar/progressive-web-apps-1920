@@ -7,15 +7,15 @@ const {placesPath} = require("../generateData");
 const {stationsPath} = require("../generateData");
 
 
-if (process.env.NODE_ENV === 'production') {
-    console.log('🧨 Destroying old tracks');
-    fs.remove(path.join(__dirname, '..', 'public'), err => {
-        if (err) console.error(err);
+// if (process.env.NODE_ENV === 'production') {
+//     console.log('🧨 Destroying old tracks');
+    // fs.remove(path.join(__dirname, '../..', 'public'), err => {
+    //     if (err) console.error(err);
         generateAllJsons();
-    });
-} else {
-    console.log('👷Skipping JSON generation in dev-mode')
-}
+    // });
+// } else {
+//     console.log('👷Skipping JSON generation in dev-mode')
+// }
 
 function generateAllJsons() {
     generateJson(stationsPath, getStations)
