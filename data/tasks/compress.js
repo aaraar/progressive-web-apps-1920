@@ -1,6 +1,8 @@
 const fs = require('fs-extra');
 const zlib = require('zlib');
 const brotli = require('brotli');
+const { stationsPath } = require ( "../generateData" );
+const { getJson } = require ( "../generateData" );
 
 const brotliSettings = {
     extension: 'br',
@@ -10,12 +12,30 @@ const brotliSettings = {
     lgwin: 12 // default
 };
 
-var dirs = ['public', 'public/stations/*'];
+let dirs = ['public', 'public/404'];
 
-getJson(stationsPath)
+getJson(stationsPath).then(stations => {
+    stations.forEach(station => {
+       dirs.push(`public/stations/${station.code}`)
+    });
 
-dirs.forEach(dir => {
-    fs.readdirSync(dir).forEach(file => {
-        file.endsWith('.js') || file.endsWith('.css') ||       file.endsWith('.html')
-    })
+    dirs.forEach(dir => {
+        fs.readdirSync(dir).forEach(file => {
+            if (file.endsWith('.js') || file.endsWith('.css') || file.endsWith('.html')) {
+                // brotli
+                const result = brotli.compress(fs.readFileSync(dir + '/' + file), brotliSettings);
+                fs.writeFileSync(dir + '/' + file + '.br', result);
+                // gzip
+                const fileContents = fs.createReadStream(dir + '/' + file);
+                const writeStream = fs.createWriteStream(dir + '/' + file + '.gz');
+                const zip = zlib.createGzip();
+                fileContents
+                    .pipe(zip)
+                    .on('error', err => console.error(err))
+                    .pipe(writeStream)
+                    .on('error', err => console.error(err));
+                fs.remove(dir + '/' + file);
+            }
+        })
+    });
 });

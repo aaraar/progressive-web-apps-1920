@@ -56,10 +56,11 @@ function checkCacheThenNet ( event, log, cacheName, fallback ) {
             else {
                 return fetch ( event.request, { redirect: 'follow' } )
                     .then ( ( response ) => {
-                    // if ( response.ok ) {
+                    if ( response.ok ) {
                         console.log ( 'response OK' );
+                        const responseClone = response.clone();
                         caches.open ( cacheName ).then ( ( cache ) => {
-                            cache.put ( event.request, response.clone() );
+                            cache.put ( event.request, responseClone );
                         } );
                         return response;
                     // } else {

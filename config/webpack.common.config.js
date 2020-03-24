@@ -7,9 +7,10 @@ const WebpackManifestPlugin = require ('webpack-manifest-plugin');
 
 module.exports = {
     
-    entry: {
-        main: './src/index.js',
-    },
+    entry: [
+        './src/index.js',
+        './node_modules/regenerator-runtime/runtime.js'
+    ],
     output: {
         filename: '[name]-[contenthash].js',
         path: path.resolve ( __dirname, '..', 'public' ),
@@ -21,7 +22,13 @@ module.exports = {
         rules: [
             {
                 test: [ /.js$/ ],
-                exclude: /(node_modules)(data)/,
+                exclude: /(node_modules)(data)(sw.js)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [ '@babel/preset-env' ]
+                    }
+                }
             },
             {
                 test: /\.s[ac]ss$/i,
