@@ -3,7 +3,7 @@ const CORE_ASSETS = [
     '/404',
     '/favicon/favicon.ico',
     '/assets/images/core/fallback.png'
-].concat(serviceWorkerOption.assets);
+].concat ( serviceWorkerOption.assets );
 
 self.addEventListener ( 'install', ( event ) => {
     const preCache = async () => {
@@ -27,17 +27,17 @@ self.addEventListener ( 'fetch', ( event ) => {
             } )
         )
     } else if ( isIconGetRequest ( event.request ) ) {
-        event.respondWith ( checkCacheThenNet( event, 'Icon request', 'icon', '/favicon/favicon.ico' ) );
+        event.respondWith ( checkCacheThenNet ( event, 'Icon request', 'icon', '/favicon/favicon.ico' ) );
     } else if ( isImgGetRequest ( event.request ) ) {
-        event.respondWith ( checkCacheThenNet( event, 'Image request', 'img', '/assets/images/core/fallback.png' ) );
+        event.respondWith ( alwaysNetThenFallback ( event, '/assets/images/core/fallback.png' ) );
     } else if ( isHtmlGetRequest ( event.request ) ) {
-        event.respondWith ( checkCacheThenNet( event, 'Page request', 'html', '/404' ) );
+        event.respondWith ( checkCacheThenNet ( event, 'Page request', 'html', '/404' ) );
     } else if ( isJsGetRequest ( event.request ) ) {
-        event.respondWith ( checkCacheThenNet( event, 'Script request', 'js', '/main.js' ) );
+        event.respondWith ( checkCacheThenNet ( event, 'Script request', 'js', '/main.js' ) );
     } else if ( isCssGetRequest ( event.request ) ) {
-        event.respondWith ( checkCacheThenNet( event, 'Styles request', 'css', '/styles.css' ) );
+        event.respondWith ( checkCacheThenNet ( event, 'Styles request', 'css', '/styles.css' ) );
     }
-});
+} );
 
 /**
  *
@@ -48,44 +48,80 @@ self.addEventListener ( 'fetch', ( event ) => {
  */
 function checkCacheThenNet ( event, log, cacheName, fallback ) {
     const hasQuery = event.request.url.indexOf ( '?' ) !== -1;
-        return caches.match ( event.request, {
-            ignoreSearch: hasQuery
-        } ).then ( ( resp ) => {
-            console.log ( log );
-            if (resp) return resp;
-            else {
-                return fetch ( event.request, { redirect: 'follow' } )
-                    .then ( ( response ) => {
-                    // if ( response.ok ) {
-                        console.log ( 'response OK' );
-                        const responseClone = response.clone();
-                        caches.open ( cacheName ).then ( ( cache ) => {
-                            cache.put ( event.request, responseClone );
-                        } );
-                        return response;
-                    // } else {
-                    //     return caches.match ( fallback ).then ( res => {
-                    //         console.log ( res );
-                    //         return res
-                    //     } );
-                    // }
-                } )
-                    .catch(err => {
-                        console.error(err);
-                        return caches.match ( fallback ).then ( res => {
-                            console.log ( res );
-                            return res
+    return caches.match ( event.request, {
+        ignoreSearch: hasQuery
+    } ).then ( ( resp ) => {
+        console.log ( log );
+        if ( resp ) {
+            return resp;
+        } else {
+            return fetch ( event.request.url, { redirect: 'follow' } )
+                .then ( ( response ) => {
+                    if ( response.ok ) {
+                    console.log ( 'response OK' );
+                    const responseClone = response.clone ();
+                    return caches.open ( cacheName )
+                        .then ( ( cache ) => {
+                        cache.put ( event.request, responseClone );
+                            return response;
+                        } )
+                        .catch(err => {
+                            console.error(err);
                         })
-                    })
-            }
+                        .finally(() => response )
+                    } else {
+                        return caches.match ( fallback ).then ( res => {
+                            return res
+                        } );
+                    }
+                } )
+                .catch ( err => {
+                    console.error ( err );
+                    return caches.match ( fallback ).then ( res => {
+                        return res
+                    } )
+                } )
+        }
+    } )
+        .catch ( err => {
+            console.error ( err );
+            return caches.match ( fallback ).then ( res => {
+                console.log ( res );
+                return res
+            } );
         } )
-            .catch ( err => {
-                console.error(err);
-                return caches.match ( fallback ).then (res => {
+}
+
+/**
+ *
+ * @param event
+ * @param fallback
+ * @returns {Promise<Response>}
+ */
+function alwaysNetThenFallback ( event, fallback ) {
+    return fetch ( event.request.url, { redirect: 'follow' } )
+        .then ( ( response ) => {
+            if ( response.ok ) {
+                console.log ( 'response OK' );
+                return response;
+            } else {
+                return caches.match ( fallback )
+                    .then ( res => {
                     console.log ( res );
                     return res
-                });
+                    } )
+                    .catch ( err => {
+                        console.error ( err );
+                    } )
+            }
+        } )
+        .catch ( err => {
+            console.error ( err );
+            return caches.match ( fallback ).then ( res => {
+                console.log ( res );
+                return res
             } )
+        } )
 }
 
 /**
