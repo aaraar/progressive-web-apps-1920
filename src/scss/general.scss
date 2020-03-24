@@ -44,6 +44,10 @@ a:visited {
   color: $light;
 }
 
+h1 a, h1 a:visited {
+  text-decoration: underline;
+}
+
 footer {
   font-style: italic;
 }

@@ -1,6 +1,7 @@
 const CORE_ASSETS = [
     '/',
     '/404',
+    '/offline',
     '/favicon/favicon.ico',
     '/assets/images/core/fallback.png'
 ].concat ( serviceWorkerOption.assets );
@@ -31,7 +32,7 @@ self.addEventListener ( 'fetch', ( event ) => {
     } else if ( isImgGetRequest ( event.request ) ) {
         event.respondWith ( alwaysNetThenFallback ( event, '/assets/images/core/fallback.png' ) );
     } else if ( isHtmlGetRequest ( event.request ) ) {
-        event.respondWith ( checkCacheThenNet ( event, 'Page request', 'html', '/404' ) );
+        event.respondWith ( alwaysNetThenFallback ( event, '/offline' ) );
     } else if ( isJsGetRequest ( event.request ) ) {
         event.respondWith ( checkCacheThenNet ( event, 'Script request', 'js', '/main.js' ) );
     } else if ( isCssGetRequest ( event.request ) ) {

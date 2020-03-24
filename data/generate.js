@@ -17,7 +17,7 @@ function generateCommon() {
                     console.error(err)
                 })
                 .then(places => {
-                    generate404();
+                    generateFallbacks();
                     console.log('🚧 Constructing index station');
                     generateIndex(stations);
                     console.log('🚧 Constructing stations, this may take a while');
@@ -71,11 +71,17 @@ function generateIndex(stations) {
         });
 }
 
-function generate404() {
+function generateFallbacks() {
     generateHtml(path.join(__dirname, '..', 'public/404/index.html'),
         path.join(__dirname, 'Pages/404.pug'),
         {
             title: "NS INFO",
             pageTitle: "404",
+        });
+    generateHtml(path.join(__dirname, '..', 'public/offline/index.html'),
+        path.join(__dirname, 'Pages/offline.pug'),
+        {
+            title: "NS INFO",
+            pageTitle: "Offline",
         });
 }
