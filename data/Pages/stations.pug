@@ -10,7 +10,7 @@ block content
                 each locationObj in location
                     if locationObj.thumbnail
                         li(class='place place--img')
-                            img(src=`https://places.ns-mlab.nl/${locationObj.thumbnail.uri}` alt=locationObj.name loading='lazy')
+                            img(src=`https://places.ns-mlab.nl/${locationObj.thumbnail.uri}` alt=locationObj.name loading='lazy' width="320px" height="200p")
                             .place--description
                                 em= locationObj.name
                                 if locationObj.description
