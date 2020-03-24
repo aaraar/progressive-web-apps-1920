@@ -9,6 +9,7 @@
     "pregenerate": "node data/tasks/stations.js",
     "generate": "node data/generate.js",
     "build": "yarn generate",
+    "postbuild": "node data/tasks/compress.js",
     "predevBuild": "yarn generate",
     "devBuild": "webpack --mode development",
     "prebuild": "webpack --mode production"

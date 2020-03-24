@@ -8,7 +8,7 @@ const brotliSettings = {
     extension: 'br',
     skipLarger: true,
     mode: 1, // 0 = generic, 1 = text, 2 = font (WOFF2)
-    quality: 10, // 0 - 11,
+    quality: 11, // 0 - 11,
     lgwin: 12 // default
 };
 
@@ -34,7 +34,6 @@ getJson(stationsPath).then(stations => {
                     .on('error', err => console.error(err))
                     .pipe(writeStream)
                     .on('error', err => console.error(err));
-                fs.remove(dir + '/' + file);
             }
         })
     });
