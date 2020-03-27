@@ -7,15 +7,42 @@ This app is now only a performance playground with mostly just an overview page 
 
 ![Static Home](./docs/images/staticHome.png)
 
+### Pagespeed scores
+Mobile
+![Pagespeed Mobile](./docs/images/pagespeedMobile.png)
+
+Desktop
+![Pagespeed Desktop](./docs/images/pagespeedDesktop.png)
+
+
+### Lighthouse scores
+Mobile
+![Lighthouse Mobile](./docs/images/lighthouseMobile.png)
+
+Desktop
+![Lighthouse Desktop](./docs/images/lighthouseDesktop.png)
+
+#### Lower accessibility score
+This is actually a score that seems to me should be 100.
+The error given:
+![Accessibility Error](./docs/images/accesibilityError.png)
+While my anchors do have a name property and a discernible content.
+But because there is also a Paragraph tag inside, it seems to deny it, eventhough screenreaders read this perfectly fine
+![Anchor tags](./docs/images/anchors.png)
+
 ## Table of contents
 - [To do](#to-do-)
 - [Change of Direction](#change-of-direction)
 - [Description](#description-)
 - [Installing](#installing-)
-- [Packages & Technologies](#packages-and-technologies)
-- [API](#how-it-works-)
-- [Feedback](#feedback-)
-- [License](#licence-)
+- [Packages & Services](#packages--services)
+- [API](#api-)
+- [How it works](#how-it-works-)
+- [Technologies Used](#technologies-used-)
+    *[Webpack](#webpack)
+    *[Custom Static Asset Generator](#custom-static-asset-generator)
+    *[Service Worker](#service-worker)
+- [License](#license-)
 
 ## To Do 📌
 - [x] Set up build tools and deployment pipeline (custom webpack config and personal site generator)
@@ -37,8 +64,8 @@ a leap and try my hand at generating the site to static HTML files with Node.
 I had to start over because of this decision, but the performance benefits up to this point are huge and it's actually really fun to do.
 
 ## Description 📝
-For the biggest part it's a tech demo I created for testing with static generated content.
-It contains a lot of trainstations in The Netherlands and neighbouring countries, but the content is mostly only available for
+For the biggest part it's a tech demo/performance playground I created for testing with static generated content.
+It contains a lot of train stations in The Netherlands and neighbouring countries, but the content is mostly only available for
 the dutch stations. It contains pictures and descriptions of it's facilities and some facilities show their availability. (like parking garages)
 
 Check out the dutch stations in particular, since more data is available to those
@@ -68,13 +95,14 @@ yarn / npm install
 
 - run `now dev`
 
-### Packages and Technologies
+### Packages & Services
 This project makes use of the following tech:
 
-  * Webpack
-  * Pug
-  * SASS
-  * ES6/7 JS
+  * [Webpack](https://webpack.js.org/)
+  * [Pug](https://pugjs.org/api/getting-started.html)
+  * [SASS](https://sass-lang.com/)
+  * [ES8 JS](https://tc39.es/ecmascript_sharedmem/shmem.html)
+  * [Zeit's now.sh](https://zeit.co/home)
 
 ## API 🐒
 I made use of the following API for this project:
@@ -88,8 +116,27 @@ Core features of this project.
   * JSON files are generated from the NS API's
   * Images are generated from the mapbox API
   * HTML Files are generated using the aforementioned JSON files and the PUG rendering engine
+  * Served on [now.sh](https://ns-info.now.sh)
+  
+## Technologies Used 🖲
+#### Webpack
+- Configured own webpack setup for Dev and Prod build modes
+- Configured babel loader to work with newer technologies such as a service worker requiring the use of the babel runtime integration
+- Assets are content-hashed for file revisions so that max-age headers can be set
+- Configured a webpack manifest so that content-hashed assets will be included in the service worker and cache
 
-## Feedback ⚠️💬
+#### Custom Static Asset Generator
+- Data JSON is fetched and saved
+- HTML pages are generated based on PUG templates and the JSON files
+- Images for each stations location is generated using mapbox static image API (bottom of each station detail page)
+- Files are compressed to brotli and gzip at the highest level so that they can be served lightning fast, although the Time-To-First-Byt of Now is not particularly high
+
+#### Service worker
+- Caching of core assets including asset revisions
+- Different caching strategies for all content types for optimal UX & DX
+- Offline mode
+
+## Feedback I would like ⚠️💬
 - Content on the stations page
 - Progressive enhanced features for the service worker (what to add?)
 - What functionality can I add, I'm a little stuck
