@@ -22,7 +22,7 @@ self.addEventListener ( 'fetch', ( event ) => {
         event.respondWith (
             caches.open ( 'core' ).then ( ( cache ) => {
                 console.log ( 'Core Asset request' );
-                return cache.match ( event.request )
+                return cache.match ( event.request.url )
             } ).catch ( () => {
                 return new Response ( 'CORE_ASSETS not found in cache' );
             } )
