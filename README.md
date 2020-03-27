@@ -2,7 +2,8 @@
 ![NS header](./docs/images/ns-header.png)
 # NS-INFO static site
 To improve the performance of [NS-INFO](https://aaraar.github.io/web-app-from-scratch-1920) I created a static site generator.   
-Unfortunately the core functionality is somewhat out of the scope I proposed for this project, so it kind of spiraled into something different
+Unfortunately the core functionality is somewhat out of the scope I proposed for this project, so it kind of spiraled into something different.
+This app is now only a performance playground with mostly just an overview page and detail pages for each station, I did however try and optimize it as much as possible.
 
 ![Static Home](./docs/images/staticHome.png)
 
