@@ -39,9 +39,9 @@ But because there is also a Paragraph tag inside, it seems to deny it, eventhoug
 - [API](#api-)
 - [How it works](#how-it-works-)
 - [Technologies Used](#technologies-used-)
-    *[Webpack](#webpack)
-    *[Custom Static Asset Generator](#custom-static-asset-generator)
-    *[Service Worker](#service-worker)
+    * [Webpack](#webpack)
+    * [Custom Static Asset Generator](#custom-static-asset-generator)
+    * [Service Worker](#service-worker)
 - [License](#license-)
 
 ## To Do 📌
