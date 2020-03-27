@@ -4,6 +4,5 @@ block content
         ul(class='stations--list')
             each station in stations
                 li(class='stations--item')
-                    a(href=`/stations/${ station.code }` name=`Station ${station.name}`)
-                        h3= station.name
+                    a(href=`/stations/${ station.code }` name=`Station ${station.name}`)= station.name
                         p= station.country
